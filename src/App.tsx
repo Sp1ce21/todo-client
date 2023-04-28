@@ -1,58 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { Route, Routes, useNavigate } from "react-router-dom";
+import "./App.css";
+import Header from "./components/header/Header";
+import NotFound from "./pages/404/NotFound";
+import AuthPage from "./pages/auth/AuthPage";
+import { useAppDispatch, useAppSelector } from "./hooks/store";
+import { useEffect } from "react";
+import { getUserThunk } from "./store/slices/userSlice";
 
-function App() {
+const App = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(({ user }) => user.token);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserThunk());
+      navigate("/");
+    } else {
+      navigate("/auth");
+    }
+  }, [token, dispatch, navigate]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <Header />
+      <Routes>
+        <Route path="/" element={<div>Home</div>} />
+        <Route path="/auth" Component={AuthPage} />
+        <Route path="*" Component={NotFound} />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
