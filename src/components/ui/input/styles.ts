@@ -8,6 +8,7 @@ export const CustomInputStyles = styled.input`
   border-radius: 8px;
   color: black;
   font-weight: 700;
+  width: 100%;
 
   &::placeholder {
     color: inherit;

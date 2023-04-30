@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import Header from "./components/header/Header";
+import { useAppDispatch, useAppSelector } from "./hooks/store";
 import NotFound from "./pages/404/NotFound";
 import AuthPage from "./pages/auth/AuthPage";
-import { useAppDispatch, useAppSelector } from "./hooks/store";
-import { useEffect } from "react";
+import TodoPage from "./pages/todo/Todo";
 import { getUserThunk } from "./store/slices/userSlice";
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<div>Home</div>} />
+        <Route path="/" Component={TodoPage} />
         <Route path="/auth" Component={AuthPage} />
         <Route path="*" Component={NotFound} />
       </Routes>
